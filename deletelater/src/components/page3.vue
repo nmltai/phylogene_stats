@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="chart-wrapper">
-         <canvas ref="chart"></canvas>
+         <!-- <canvas ref="chart"></canvas> -->
         </div>
         <p>{{status}}</p>
     </div>
@@ -59,7 +59,7 @@
                     }
                 }
             });
-            this.loadQuote();
+            // this.loadQuote();
         },
     created() {
         // this.loadQuote();
