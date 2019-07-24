@@ -1,11 +1,8 @@
 <template>
-  <div class="chart-wrapper">
     <div>
-      <!-- <h1>Home</h1> -->
       <chart :options="chartOptionsBar"></chart>
       <p>{{status}}</p>
     </div>
-  </div>
 </template>
 
 <script>
@@ -65,7 +62,7 @@ export default {
   } 
 }),
   created() {
-    this.loadQuote();
+    // this.loadQuote();
   },
   methods: {
     loadQuote() {

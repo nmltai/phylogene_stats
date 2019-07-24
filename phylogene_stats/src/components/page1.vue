@@ -1,7 +1,7 @@
 <template>
     <div>
-        <p>{{status}}</p>
         <canvas ref="chart"></canvas>
+        <!-- <p>{{status}}</p> -->
     </div>
 </template>
 
@@ -15,9 +15,9 @@
         status: '',
         charData:{
             data: {
-                labels: ['total # genes', 'total known functions'],
+                labels: ['Total # of Gene Families', 'Total # of Families with at least 1 known function (plant & nonplant)'],
                 datasets: [{
-                    label: '# of Gene Families within range of Genes',
+                    label: '# of Gene Families',
                     data: [],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
@@ -57,11 +57,11 @@
                     }
                 }
             });
-            this.loadQuote();
+            // this.loadQuote();
         },
-        created() {
+        // created() {
         // this.loadQuote();
-    },
+    // },
     methods: {
         loadQuote() {
             this.status = 'Loading...';
@@ -83,6 +83,22 @@
                 console.log(knownFunctionCount);
                 this.charData.data.datasets[0].data.push(elementCount);
                 this.charData.data.datasets[0].data.push(knownFunctionCount);
+
+                var chart = this.$refs.chart;
+                var ctx = chart.getContext("2d");
+                var myChart = new Chart(ctx, {
+                  type: 'bar',
+                  data: this.charData.data,
+                  options: {
+                    scales: {
+                      yAxes: [{
+                        ticks: {
+                          beginAtZero: true
+                        }
+                      }]
+                    }
+                  }   
+                });
             })
             .catch(function (error) 
             {
@@ -94,18 +110,4 @@
 </script>
 
 <style>
-    /* #app {
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        text-align: center;
-        color: #2c3e50;
-        margin-top: 60px;
-    }
-    #content {
-        margin: auto;
-        width: 1024px;
-        background-color: #FFFFFF;
-        padding: 20px;
-    } */
 </style>
