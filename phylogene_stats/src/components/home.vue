@@ -1,7 +1,7 @@
 <template>
   <div>
     <canvas ref="chart"></canvas>
-    <!-- <p>{{status}}</p> -->
+    <p>{{status}}</p>
   </div>
 </template>
 
@@ -54,20 +54,20 @@
             }
           }
         });
-        // this.loadQuote();
+        this.loadQuote();
       },
       created() {
-      // this.loadQuote();
+      this.loadQuote();
       },
     methods: {
       loadQuote() {
         this.status = 'Loading...';
-        axios.get('http://54.68.67.235:3000/api/panther/ids')
+        axios.get('http://35.165.70.47:8080/panther/genecount')
         .then( (response) => {
-          console.log(response);
+          // console.log(response);
           this.status = 'Done Loading.';
-          let docs = response.data.response.docs;
-          // docs = docs.slice(0, 10);  
+          let docs = response.data;
+          // console.log(response.data);
 
           let ARRAY_LENGTH = 6;
           var count = new Array(ARRAY_LENGTH);
@@ -76,21 +76,20 @@
           }
           docs.forEach(element => 
           {
-            if (element.uniprot_ids.length <= 10 && element.uniprot_ids.length >= 1)
+            if (element.uniprot_ids_count <= 10 && element.uniprot_ids_count >= 1)
               count[0] += 1;
-            if (element.uniprot_ids.length <= 100 && element.uniprot_ids.length >= 11) 
+            if (element.uniprot_ids_count <= 100 && element.uniprot_ids_count >= 11) 
               count[1] += 1;
-            if (element.uniprot_ids.length <= 500 && element.uniprot_ids.length >= 101) 
+            if (element.uniprot_ids_count <= 500 && element.uniprot_ids_count >= 101) 
               count[2] += 1;
-            if(element.uniprot_ids.length <= 1000 && element.uniprot_ids.length >= 501) 
+            if(element.uniprot_ids_count <= 1000 && element.uniprot_ids_count >= 501) 
               count[3] += 1;
-            if(element.uniprot_ids.length <= 2000 && element.uniprot_ids.length >= 1001) 
+            if(element.uniprot_ids_count <= 2000 && element.uniprot_ids_count >= 1001) 
               count[4] += 1;
-            if(element.uniprot_ids.length <= 50000000 && element.uniprot_ids.length >= 2000) 
+            if(element.uniprot_ids_count <= 50000000 && element.uniprot_ids_count >= 2000) 
               count[5] += 1;
           });
           for (var i = 0; i < ARRAY_LENGTH; i++) {
-            // console.log(count[i]);
             this.charData.datasets[0].data.push(count[i]);
           }
           var chart = this.$refs.chart;

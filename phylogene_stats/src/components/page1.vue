@@ -1,7 +1,7 @@
 <template>
     <div>
+        <p>{{status}}</p>
         <canvas ref="chart"></canvas>
-        <!-- <p>{{status}}</p> -->
     </div>
 </template>
 
@@ -57,22 +57,22 @@
     methods: {
         loadQuote() {
             this.status = 'Loading...';
-            axios.get('http://54.68.67.235:3000/api/panther/annotations')
+            axios.get('http://35.165.70.47:8080/panther/annotation')
             .then( (response) => {
-                console.log(response);
+                // console.log(response);
                 this.status = 'Done Loading.';
-                let docs = response.data.response.docs;
+                let docs = response.data;
                 let knownFunctionCount = 0;
                 let elementCount = 0;
                 docs.forEach(element => 
                 {
                     // console.log(element.id);
-                    if (element.species_list != null)
+                    if (element.go_annotations_count != null)
                         knownFunctionCount += 1;
                     elementCount += 1;
                 });
-                console.log(elementCount);
-                console.log(knownFunctionCount);
+                // console.log(elementCount);
+                // console.log(knownFunctionCount);
                 this.charData.data.datasets[0].data.push(elementCount);
                 this.charData.data.datasets[0].data.push(knownFunctionCount);
 
