@@ -62,49 +62,37 @@ export default {
   } 
 }),
   created() {
-    // this.loadQuote();
+    this.loadQuote();
   },
   methods: {
     loadQuote() {
       this.status = 'Loading...';
-      axios.get('http://54.68.67.235:3000/api/panther/ids')
+      axios.get('http://35.165.70.47:8080/panther/genecount')
       .then( (response) => {
         this.status = 'Done Loading.';
-        let docs = response.data.response.docs;
+        let docs = response.data;
         // docs = docs.slice(0, 10);
 
-        let ARRAY_LENGTH = 23;
-        var count = new Array(ARRAY_LENGTH);
-        for (var i = 0; i < count.length; i++) {
-          count[i] = 0;
-        }
-        docs.forEach(element => {
-          // console.log(element.uniprot_ids.length);
-
-        let start_range = 0;
-        let end_range = 24; 
-            for (var i = 0; i < 16; i++) 
-            {
-              if (element.uniprot_ids.length <= end_range && element.uniprot_ids.length >= start_range)
-                count[i] += 1;
-              end_range += 25;
-              start_range += 25;
-            }
-          if (element.uniprot_ids.length <= 749 && element.uniprot_ids.length >= 500)
-            count[16] += 1;
-          if (element.uniprot_ids.length <= 999 && element.uniprot_ids.length >= 750)
-            count[17] += 1;
-          if (element.uniprot_ids.length <= 1499 && element.uniprot_ids.length >= 1000)
-            count[18] += 1;
-          if(element.uniprot_ids.length <= 1999 && element.uniprot_ids.length >= 1500)
-            count[19] += 1;
-          if(element.uniprot_ids.length <= 2499 && element.uniprot_ids.length >= 2000)
-            count[20] += 1;
-          if(element.uniprot_ids.length <= 2999 && element.uniprot_ids.length >= 2500)
-            count[21] += 1;
-          if(element.uniprot_ids.length <= 500000 && element.uniprot_ids.length >= 3000)
-            count[22] += 1;
-        });
+          let ARRAY_LENGTH = 6;
+          var count = new Array(ARRAY_LENGTH);
+          for (var i = 0; i < count.length; i++) {
+            count[i] = 0;
+          }
+          docs.forEach(element => 
+          {
+            if (element.uniprot_ids_count <= 10 && element.uniprot_ids_count >= 1)
+              count[0] += 1;
+            if (element.uniprot_ids_count <= 100 && element.uniprot_ids_count >= 11) 
+              count[1] += 1;
+            if (element.uniprot_ids_count <= 500 && element.uniprot_ids_count >= 101) 
+              count[2] += 1;
+            if(element.uniprot_ids_count <= 1000 && element.uniprot_ids_count >= 501) 
+              count[3] += 1;
+            if(element.uniprot_ids_count <= 2000 && element.uniprot_ids_count >= 1001) 
+              count[4] += 1;
+            if(element.uniprot_ids_count <= 50000000 && element.uniprot_ids_count >= 2000) 
+              count[5] += 1;
+          });
             for (var i = 0; i < ARRAY_LENGTH; i++) 
             {
               // console.log(count[i]);
