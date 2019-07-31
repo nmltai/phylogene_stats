@@ -1,7 +1,9 @@
 <template>
     <div>
         <p>{{status}}</p>
-        <canvas ref="chart"></canvas>
+        <div class="chart-container">
+            <canvas ref="chart"></canvas>
+        </div>
     </div>
 </template>
 
@@ -15,17 +17,22 @@
         status: '',
         charData:{
             data: {
-                labels: ['Total # of Gene Families', 'Total # of Families with at least 1 known function (plant & nonplant)'],
+                labels: ['Total', 'Families with at least 1 known function(plant & nonplant)','Viridiplantae specific',
+                 'Viridiplantae specific with at least 1 known function'],
                 datasets: [{
                     label: '# of Gene Families',
                     data: [],
                     backgroundColor: [
                         'rgba(255, 159, 64, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 159, 64)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(153, 102, 255)',
                     ],
                     borderColor: [
                         'rgba(255, 159, 64, 1)',
                         'rgba(255, 159, 64, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(153, 102, 255, 1)',
                     ],
                     borderWidth: 1
                 }]
@@ -40,10 +47,29 @@
                 type: 'bar',
                 data: this.charData.data,
                 options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    title: {
+                        display: true,
+                        text: 'Gene Families and Known Functions',
+                        fontSize: '20'
+                    },
                     scales: {
                         yAxes: [{
                             ticks: {
-                                beginAtZero: true
+                            beginAtZero: true
+                            },
+                            scaleLabel: {
+                            display: true,
+                            labelString: '# of Gene Families',
+                            fontSize: '20'
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                            display: true,
+                            labelString: 'Gene Families under Specific Conditions',
+                            fontSize: '20'
                             }
                         }]
                     }
@@ -51,9 +77,6 @@
             });
             this.loadQuote();
         },
-        // created() {
-        // this.loadQuote();
-    // },
     methods: {
         loadQuote() {
             this.status = 'Loading...';
@@ -61,20 +84,29 @@
             .then( (response) => {
                 // console.log(response);
                 this.status = 'Done Loading.';
+
                 let docs = response.data;
                 let knownFunctionCount = 0;
                 let elementCount = 0;
+                let plantSpecific = 0;
+                let plantSpecificFunctionCount = 0;
                 docs.forEach(element => 
                 {
                     // console.log(element.id);
                     if (element.go_annotations_count != null)
                         knownFunctionCount += 1;
+                    if (element.species_list == "Viridiplantae")
+                        plantSpecific += 1;
+                    if (element.species_list == "Viridiplantae" && element.go_annotations_count != null)
+                        plantSpecificFunctionCount += 1;
                     elementCount += 1;
                 });
                 // console.log(elementCount);
                 // console.log(knownFunctionCount);
                 this.charData.data.datasets[0].data.push(elementCount);
                 this.charData.data.datasets[0].data.push(knownFunctionCount);
+                this.charData.data.datasets[0].data.push(plantSpecific);
+                this.charData.data.datasets[0].data.push(plantSpecificFunctionCount);
 
                 var chart = this.$refs.chart;
                 var ctx = chart.getContext("2d");
@@ -82,11 +114,31 @@
                   type: 'bar',
                   data: this.charData.data,
                   options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    title: {
+                        display: true,
+                        text: 'Gene Families and Known Functions',
+                        fontSize: '20'
+                    },
                     scales: {
-                      yAxes: [{
-                        ticks: {
-                          beginAtZero: true
-                        }
+                        yAxes: [{
+                            ticks: {
+                            beginAtZero: true
+                            },
+                            scaleLabel: {
+                            display: true,
+                            labelString: '# of Gene Families',
+                            fontSize: '20'
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                            display: true,
+                            labelString: 'Gene Families under Specific Conditions',
+                            fontSize: '20',
+                            barThickness: 6
+                            }
                       }]
                     }
                   }   
@@ -102,4 +154,8 @@
 </script>
 
 <style>
+.chart-container {
+    width: 900px;
+    height: 500px
+}
 </style>
