@@ -1,7 +1,9 @@
 <template>
   <div>
-    <canvas ref="chart"></canvas>
     <p>{{status}}</p>
+    <div class="chart-container">
+      <canvas ref="chart"></canvas>
+    </div>
   </div>
 </template>
 
@@ -15,7 +17,7 @@
       charData:{
         labels: ['1-10', '11-100', '101-500', '501-1000', '1001-2000', '2000+'],
         datasets: [{
-          label: '# of Gene Families within Range of Gene Count',
+          label: '# of Gene Families',
           data: [],
           backgroundColor: [
             'rgba(54, 162, 235, 0.2)',
@@ -45,10 +47,28 @@
           type: 'bar',
           data: this.charData,
           options: {
+            responsive: true,
+            title: {
+              display: true,
+              text: 'Gene Families Distributed based on # of Genes',
+              fontSize: '20'
+            },
             scales: {
               yAxes: [{
                 ticks: {
                   beginAtZero: true
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: '# of Gene Families',
+                  fontSize: '20'
+                }
+              }],
+              xAxes: [{
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Range of Gene Count',
+                  fontSize: '20',
                 }
               }]
             }
@@ -98,10 +118,28 @@
             type: 'bar',
             data: this.charData,
             options: {
+            title: {
+              display: true,
+              text: 'Gene Families Distributed based on # of Genes',
+              fontSize: '20'
+            },
+              responsive: true,
               scales: {
                 yAxes: [{
                   ticks: {
                     beginAtZero: true
+                  },
+                  scaleLabel: {
+                    display: true,
+                    labelString: '# of Gene Families',
+                    fontSize: '20'
+                  }
+                }],
+                xAxes: [{
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Range of Gene Count',
+                    fontSize: '20',
                   }
                 }]
               }
